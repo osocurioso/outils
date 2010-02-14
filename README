@@ -1,0 +1,34 @@
+This module contains several tools for easing script output:
+
+- `osplitter`, an output stream splitter
+- `writecounter`, counts the number of write calls
+
+The output stream splitter (`osplitter`)
+========================================
+
+When generating data from a typical simulation script, one usually
+wants the output redirected into several places. A common use case is
+to print log messages both to `stderr` and a file. The `osplitter`
+class can be used as a drop-in replacement for streams like the
+sys.stderr, with output redirected to several places by registering
+different steam objects with the `osplitter`. In the following
+example, log messages are output both to a temporary file and to
+sys.stderr:
+
+    >>> import sys, tempfile
+    >>> import outils
+    >>> outfile = tempfile.TemporaryFile()
+    >>> ostream = outils.osplitter(outfile, sys.stdout)
+    >>> print >>ostream, 'Logged message'
+    Logged message
+    >>> outfile.seek(0)
+    >>> outfile.read()
+    'Logged message\n'
+    >>>
+
+The write counter (`writecounter`)
+==================================
+
+This class implements a writer which simply counts the number of write
+operations. This can for example be used in conjunction for polling
+the progress of the data processing from a separate thread.
