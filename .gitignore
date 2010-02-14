@@ -1,0 +1,5 @@
+# Ignore Emacs tmp files
+*~
+
+# Ignore .pyc files
+*.pyc
